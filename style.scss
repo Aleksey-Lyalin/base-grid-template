@@ -1,0 +1,239 @@
+%grid {
+    display: grid;
+    grid-column-gap: 15px;
+    grid-template-columns: 15px repeat(12, 1fr) 15px;
+    @media (min-width: 992px) {
+      grid-column-gap: 30px;
+      grid-template-columns: auto repeat(12, minmax(0px, 65px)) auto;
+    }
+  }
+  
+  @function templateRow($list) {
+    $resultString: "";
+    @for $i from 1 through length($list) {
+      @if $i % 2 != 0 {
+        $count: nth($list, $i);
+        @for $j from 1 through $count {
+          $resultString: $resultString + " " + nth($list, $i+1);
+        }
+      }
+    }
+    @return $resultString;
+  }
+  
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+  
+  main {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    flex: 1 1 80%;
+  }
+  
+  header {
+    .logo {
+      grid-area: logo;
+    }
+  
+    .header__nav {
+      grid-area: hnav;
+    }
+  
+    .search {
+      grid-area: srch;
+      align-self: center;
+    }
+  
+    @extend %grid;
+    grid-template-areas: templateRow(
+       (1, ".", 1, "logo", 10, "hnav", 1, "srch", 1, ".")
+    );
+    @media (min-width: 768px) {
+      grid-template-areas: templateRow(
+         (1, ".", 3, "logo", 6, "hnav", 3, "srch", 1, ".")
+      );
+    }
+    background-color: #20232a;
+    color: #ffffff;
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    height: 60px;
+  }
+  
+  footer {
+    .disclaimer {
+      grid-area: leftFooter;
+    }
+  
+    .footer__nav {
+      grid-area: rightFooter;
+    }
+  
+    @extend %grid;
+    grid-template-areas:
+      templateRow((1, ".", 12, "leftFooter", 1, "."))
+      templateRow((1, ".", 12, "rightFooter", 1, "."));
+    @media (min-width: 768px) {
+      grid-template-areas: templateRow(
+         (1, ".", 7, "leftFooter", 5, "rightFooter", 1, ".")
+      );
+    }
+    background-color: #20232a;
+    color: #ffffff;
+    padding-top: 10px;
+    padding-bottom: 50px;
+    flex: 1 1 10%;
+  }
+  
+  
+  /* Components (these could be broken out into a SCSS file for each component) */
+  
+  /* The Marquee component */
+  .marquee {
+    .product-name {
+      grid-area: product-name;
+    }
+  
+    .description {
+      grid-area: description;
+    }
+  
+    .actions {
+      grid-area: actions;
+    }
+  
+    @extend %grid;
+    grid-template-areas:
+      templateRow((1, ".", 12, "product-name", 1, "."))
+      templateRow((1, ".", 12, "description", 1, "."))
+      templateRow((1, ".", 12, "actions", 1, "."));
+    background-color: #2b2d66;
+    color: white;
+    background-image: url("https://raw.githubusercontent.com/Firebrand/mediumgrid/master/rocket.png");
+    background-size: cover;
+    background-position: right;
+    padding: 4% 0 4% 0;
+  
+    @media (min-width: 768px) {
+      background-position: center;
+    }
+  }
+  
+  
+  /* The Cards component */
+  .cards {
+    .card1 {
+      grid-area: card1;
+    }
+  
+    .card2 {
+      grid-area: card2;
+    }
+  
+    .card3 {
+      grid-area: card3;
+    }
+  
+    .card4 {
+      grid-area: card4;
+    }
+  
+    @extend %grid;
+    grid-template-areas:
+      templateRow((1, ".", 12, "card1", 1, "."))
+      templateRow((1, ".", 12, "card2", 1, "."))
+      templateRow((1, ".", 12, "card3", 1, "."))
+      templateRow((1, ".", 12, "card4", 1, "."));
+  
+    @media (min-width: 768px) {
+      grid-template-areas:
+        templateRow((1, ".", 6, "card1", 6, "card2", 1, "."))
+        templateRow((1, ".", 6, "card3", 6, "card4", 1, "."));
+        padding-bottom: 80px;
+      .card1 {
+        padding-bottom: 20px;
+      }
+    }
+  
+    @media (min-width: 992px) {
+      grid-template-areas: templateRow(
+         (1, ".", 3, "card1", 3, "card2", 3, "card3", 3, "card4", 1, ".")
+      );
+    }
+  
+    padding-top: 60px;
+    line-height: 1.4;
+  }
+  
+  
+  /* The Code component */
+  .code {
+    .description {
+      grid-area: description;
+    }
+  
+    .editor {
+      grid-area: editor;
+      height: 270px;
+      background-color: black;
+      margin-bottom: 25px;
+      color: white;
+      overflow: auto;
+    }
+  
+    .result {
+      grid-area: result;
+    }
+  
+    @extend %grid;
+  
+    grid-template-areas:
+      templateRow((1, ".", 12, "description", 1, "."))
+      templateRow((1, ".", 12, "editor", 1, "."))
+      templateRow((1, ".", 12, "result", 1, "."));
+  
+    @media (min-width: 768px) {
+      grid-template-areas: templateRow(
+         (1, ".", 5, "description", 5, "editor", 2, "result", 1, ".")
+      );
+    }
+  
+    padding-bottom: 60px;
+  }
+  
+  /* The CTA component */
+  .cta {
+    .button {
+      grid-area: button;
+    }
+  
+    .link {
+      grid-area: link;
+    }
+  
+    background: #282c34;
+    color: #ffffff;
+    padding-top: 45px;
+    padding-bottom: 25px;
+    @extend %grid;
+  
+    grid-template-areas: templateRow((1, ".", 12, "button", 1, "."))
+                         templateRow((1, ".", 12, "link", 1,  "."));
+  
+    @media (min-width: 768px) {
+      grid-template-areas: templateRow((5, ".", 2, "button", 3, "link", 4, "."));
+      place-items: baseline;
+      .button {
+      width: 100%;
+       }
+    }
+    
+    place-items: center;
+    
+  }
+  
